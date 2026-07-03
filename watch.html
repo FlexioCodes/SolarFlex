@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SolarFlix Room</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div><h1>SOLARFLIX ROOM</h1><p id="movieName">Loading...</p></div>
+    <div class="right"><a class="btn ghost" href="./index.html">Back</a></div>
+  </header>
+  <main class="player-wrap">
+    <video id="video" class="player" controls playsinline></video>
+    <div class="controls">
+      <span id="role" class="badge"></span>
+      <span id="roomLabel" class="badge"></span>
+      <button id="copyBtn">Copy Invite</button>
+      <button id="syncBtn">Force Sync Now</button>
+    </div>
+    <div class="room">
+      <div class="small">Invite URL</div>
+      <div id="invite" class="code"></div>
+      <p class="small">Live sync is peer-to-peer (WebRTC). Owner controls play/pause/seek.</p>
+    </div>
+  </main>
+  <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+  <script src="./watch.js"></script>
+</body>
+</html>

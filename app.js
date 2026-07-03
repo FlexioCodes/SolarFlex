@@ -1,0 +1,8 @@
+const grid=document.getElementById("grid"),statusEl=document.getElementById("status"),searchEl=document.getElementById("search"),refreshBtn=document.getElementById("refreshBtn");let movies=[];
+function esc(s){return s.replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
+function roomId(){return Math.random().toString(36).slice(2,10)}
+async function loadMovies(){statusEl.textContent="Loading movies...";try{const res=await fetch("./movies/index.json?ts="+Date.now());if(!res.ok)throw new Error();const data=await res.json();movies=(data.movies||[]).filter(m=>/\.mp4$/i.test(m.path));render(movies);statusEl.textContent=`Loaded ${movies.length} movie(s)`}catch{statusEl.textContent="Could not load movies/index.json";grid.innerHTML=""}}
+function card(movie){const room=roomId(),watchOwner=`./watch.html?movie=${encodeURIComponent(movie.path)}&room=${room}&owner=1`,watchViewer=`./watch.html?movie=${encodeURIComponent(movie.path)}&room=${room}`;return `<article class="card"><video class="preview" src="${movie.path}" muted preload="metadata"></video><div class="meta"><h3 class="name" title="${esc(movie.name)}">${esc(movie.name)}</h3><div class="row"><a class="btn" href="${watchOwner}">Create Room</a><a class="btn ghost" href="${watchViewer}">Quick Watch</a></div></div></article>`}
+function render(list){grid.innerHTML=list.map(card).join("")}
+searchEl.addEventListener("input",()=>{const q=searchEl.value.trim().toLowerCase();if(!q)return render(movies);render(movies.filter(m=>m.name.toLowerCase().includes(q)||m.path.toLowerCase().includes(q)))});
+refreshBtn.addEventListener("click",loadMovies);loadMovies();
